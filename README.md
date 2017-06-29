@@ -52,16 +52,16 @@ Currently this module does not support the entirety of [full range of AWS contai
 
 The list of supported parameters is
 
-  - name (string)
-  - image (string)
-  - cpu (number)
-  - memory (number)
-  - essential (boolean)
-  - links (list)
-  - port_mappings (list of maps)
-  - environment (map)
-  - mount_points (list of maps)
-  - volumes_from (list of maps)
+  - `name` (string)
+  - `image` (string)
+  - `cpu` (number)
+  - `memory` (number)
+  - `essential` (boolean)
+  - `links` (list)
+  - `port_mappings` (list of maps)
+  - `environment` (map)
+  - `mount_points` (list of maps)
+  - `volumes_from` (list of maps)
 
 Assume that all parameter names that would normally be _camelCase_ have been changed to use underscores. For example, `volumesFrom` moves to `volumes_from`, and `sourceContainer` to `source_container`, and so on, to match Terraform's style.
 
