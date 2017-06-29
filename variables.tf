@@ -45,7 +45,6 @@ variable "working_directory" {
 }
 
 variable "environment" {
-  # A map! A map!
   type = "map"
   default = {}
   description = ""

@@ -1,3 +1,6 @@
+# This is done because boolean values cross the module boundary as 0 and 1,
+# So we need to cheaply cast it back to the literal of `false` and `true`
+
 data "template_file" "essential" {
   template = "$${jsonencode("essential")}: $${val ? true : false}"
   vars {
@@ -31,7 +34,7 @@ JSON
   }
 }
 
-
+# Wrap the rendered port mappings in a JSON array
 data "template_file" "_port_mappings" {
   template = <<JSON
 "portMappings": [$${ports}]
@@ -68,7 +71,7 @@ JSON
   }
 }
 
-
+# Done this way because of module boundaries casting booleans to 0 and 1
 data "template_file" "_mount_keys" {
   count = "${length(var.mount_points)}"
   template = <<JSON
