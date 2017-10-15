@@ -3,6 +3,7 @@
 
 data "template_file" "essential" {
   template = "$${jsonencode("essential")}: $${val ? true : false}"
+
   vars {
     val = "${var.essential != "" ? var.essential : "false"}"
   }
@@ -15,6 +16,7 @@ data "template_file" "essential" {
 
 data "template_file" "_port_mapping" {
   count = "${length(var.port_mappings)}"
+
   template = <<JSON
 {$${join(",",
   compact(
@@ -26,8 +28,10 @@ data "template_file" "_port_mapping" {
   )
 )}}
 JSON
+
   vars {
-    hostPort      = "${ lookup(var.port_mappings[count.index], "host_port", "") }"
+    hostPort = "${ lookup(var.port_mappings[count.index], "host_port", "") }"
+
     # So that TF will throw an error - this is a required field
     containerPort = "${ lookup(var.port_mappings[count.index], "container_port") }"
     protocol      = "${ lookup(var.port_mappings[count.index], "protocol", "") }"
@@ -39,25 +43,27 @@ data "template_file" "_port_mappings" {
   template = <<JSON
 "portMappings": [$${ports}]
 JSON
+
   vars {
     ports = "${join(",",data.template_file._port_mapping.*.rendered)}"
   }
 }
-
 
 # Constructs the environment K/V from a map.
 # Prevents an envar from being declared more than once, as is sensible
 
 data "template_file" "_environment_keys" {
   count = "${length(keys(var.environment))}"
+
   template = <<JSON
 {
   "name": $${name},
   "value":$${value}
 }
 JSON
+
   vars {
-    name = "${jsonencode( element(keys(var.environment), count.index) )}"
+    name  = "${jsonencode( element(keys(var.environment), count.index) )}"
     value = "${jsonencode( lookup(var.environment, element(keys(var.environment), count.index)) )}"
   }
 }
@@ -66,6 +72,7 @@ data "template_file" "_environment_list" {
   template = <<JSON
   "environment": [$${environment}]
 JSON
+
   vars {
     environment = "${join(",",data.template_file._environment_keys.*.rendered)}"
   }
@@ -74,6 +81,7 @@ JSON
 # Done this way because of module boundaries casting booleans to 0 and 1
 data "template_file" "_mount_keys" {
   count = "${length(var.mount_points)}"
+
   template = <<JSON
 {$${join(",",
   compact(
@@ -85,10 +93,11 @@ data "template_file" "_mount_keys" {
   )
 )}}
 JSON
+
   vars {
-    sourceVolume = "${lookup(var.mount_points[count.index], "source_volume")}"
-    containerPath = "${lookup(var.mount_points[count.index], "container_path")}",
-    read_only =  "${lookup(var.mount_points[count.index], "read_only", "")}"
+    sourceVolume  = "${lookup(var.mount_points[count.index], "source_volume")}"
+    containerPath = "${lookup(var.mount_points[count.index], "container_path")}"
+    read_only     = "${lookup(var.mount_points[count.index], "read_only", "")}"
   }
 }
 
@@ -98,16 +107,17 @@ data "template_file" "_mount_list" {
   template = <<JSON
 "mountPoints": [$${mounts}]
 JSON
+
   vars {
     mounts = "${join(",",data.template_file._mount_keys.*.rendered)}"
   }
 }
 
-
 # create the volume_from elements
 
 data "template_file" "_volumes_from_keys" {
   count = "${length(var.volumes_from)}"
+
   template = <<JSON
 {$${join(",",
   compact(
@@ -118,9 +128,10 @@ data "template_file" "_volumes_from_keys" {
   )
 )}}
 JSON
+
   vars {
     sourceContainer = "${lookup(var.volumes_from[count.index], "source_container")}"
-    read_only =  "${lookup(var.volumes_from[count.index], "read_only", "")}"
+    read_only       = "${lookup(var.volumes_from[count.index], "read_only", "")}"
   }
 }
 
@@ -131,11 +142,11 @@ data "template_file" "_volumes_from_list" {
   template = <<JSON
 "volumesFrom": [$${volumes}]
 JSON
+
   vars {
     volumes = "${join(",",data.template_file._volumes_from_keys.*.rendered)}"
   }
 }
-
 
 # Builds the final rendered dict
 # Ideally, this would cat the dict out through jq and ensure that it's a valid
@@ -147,6 +158,7 @@ data "template_file" "_final" {
     $${val}
   }
 JSON
+
   vars {
     val = "${join(",",
       compact(

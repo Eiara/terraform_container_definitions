@@ -3,5 +3,5 @@ output "json" {
 }
 
 output "name" {
-   value = "${var.name}"
+  value = "${var.name}"
 }

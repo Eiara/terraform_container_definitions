@@ -1,91 +1,96 @@
 variable "name" {
   description = ""
 }
+
 variable "image" {
   description = ""
 }
+
 variable "essential" {
-  default = ""
+  default     = ""
   description = ""
 }
+
 variable "memory" {
-  default = ""
+  default     = ""
   description = ""
 }
+
 variable "cpu" {
-  default = ""
+  default     = ""
   description = ""
 }
 
 variable "port_mappings" {
-  type = "list"
-  default = []
+  type        = "list"
+  default     = []
   description = ""
 }
+
 variable "links" {
-  type = "list"
-  default = []
+  type        = "list"
+  default     = []
   description = ""
 }
 
 variable "entry_point" {
-  type = "list"
-  default = []
+  type        = "list"
+  default     = []
   description = ""
 }
 
 variable "command" {
-  default = []
+  default     = []
   description = ""
 }
 
 variable "working_directory" {
-  default = ""
+  default     = ""
   description = ""
 }
 
 variable "environment" {
-  type = "map"
-  default = {}
+  type        = "map"
+  default     = {}
   description = ""
 }
 
 variable "disable_networking" {
-  default = ""
+  default     = ""
   description = ""
 }
 
 variable "hostname" {
-  default = ""
+  default     = ""
   description = ""
 }
 
 variable "dns_servers" {
-  default = []
+  default     = []
   description = ""
 }
 
 variable "dns_search_domains" {
-  default = []
+  default     = []
   description = ""
 }
 
 variable "extra_hosts" {
-  default = []
+  default     = []
   description = ""
 }
 
 variable "read_only_root_filesystem" {
-  default = ""
+  default     = ""
   description = ""
 }
 
 variable "mount_points" {
-  default = []
+  default     = []
   description = "a list of maps"
 }
 
-variable "volumes_from"  {
-  default = []
+variable "volumes_from" {
+  default     = []
   description = "a list of maps"
 }
