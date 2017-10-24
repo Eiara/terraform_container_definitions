@@ -39,6 +39,7 @@ JSON
 }
 
 # Wrap the rendered port mappings in a JSON array
+
 data "template_file" "_port_mappings" {
   template = <<JSON
 "portMappings": [$${ports}]
@@ -173,6 +174,7 @@ JSON
           "${length(keys(var.environment)) > 0 ? data.template_file._environment_list.rendered : "" }",
           "${length(var.mount_points) > 0 ? data.template_file._mount_list.rendered : "" }",
           "${length(var.volumes_from) > 0 ? data.template_file._volumes_from_list.rendered : "" }",
+          "${length(var.command) > 0 ? "${jsonencode("command")}: ${jsonencode(var.command)}" : "" }",
           )
         )
       )}"
