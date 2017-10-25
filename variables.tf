@@ -94,3 +94,14 @@ variable "volumes_from" {
   default     = []
   description = "a list of maps"
 }
+
+variable "logging_driver" {
+  default = ""
+  type = "string"
+  description = "logging configuration"
+}
+variable "logging_options" {
+  default = {}
+  type = "map"
+  description = ""
+}

@@ -1,4 +1,4 @@
-module "test" {
+module "test_command" {
   source = "../"
   
   name = "command_test"
@@ -6,6 +6,6 @@ module "test" {
   command = ["a","b","c"]
 }
 
-output "test" {
-  value = "${module.test.json}"
+output "test_command" {
+  value = "${module.test_command.json}"
 }

@@ -80,6 +80,7 @@ JSON
 }
 
 # Done this way because of module boundaries casting booleans to 0 and 1
+
 data "template_file" "_mount_keys" {
   count = "${length(var.mount_points)}"
 
@@ -149,10 +150,43 @@ JSON
   }
 }
 
+data "template_file" "_log_configuration_driver" {
+  template = "$${driver}"
+  vars {
+    driver = "${ length(var.logging_driver) > 0
+      ? "${jsonencode("logDriver")}: ${ jsonencode(var.logging_driver) }"
+      : ""
+      }"
+  }
+}
+
+
+
+data "template_file" "_log_configuration_options" {
+  # Will become an empty string
+  template = "${jsonencode("options")}: ${jsonencode(var.logging_options)}"
+}
+
+
+data "template_file"  "_log_configuration" {
+  template = "{$${configuration}}"
+  vars {
+    configuration = "${join(",",
+        compact(
+          list(
+            data.template_file._log_configuration_driver.rendered,
+            data.template_file._log_configuration_options.rendered
+          )
+        )
+    )}"
+  }
+}
+
 # Builds the final rendered dict
 # Ideally, this would cat the dict out through jq and ensure that it's a valid
 # JSON blob, but doing so may not be a reasonable (or even easy) action to 
 # Take, so it's probably best to not do that.
+
 data "template_file" "_final" {
   template = <<JSON
   {
@@ -175,8 +209,14 @@ JSON
           "${length(var.mount_points) > 0 ? data.template_file._mount_list.rendered : "" }",
           "${length(var.volumes_from) > 0 ? data.template_file._volumes_from_list.rendered : "" }",
           "${length(var.command) > 0 ? "${jsonencode("command")}: ${jsonencode(var.command)}" : "" }",
+          "${ length(var.logging_driver) > 0
+            ? "${jsonencode("logConfiguration")}: ${data.template_file._log_configuration.rendered}"
+            : ""
+            }",
           )
         )
       )}"
   }
 }
+
+          /**/
