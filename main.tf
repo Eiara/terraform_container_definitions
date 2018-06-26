@@ -189,9 +189,9 @@ data "template_file"  "_log_configuration" {
 
 data "template_file" "_final" {
   template = <<JSON
-  {
+  [{
     $${val}
-  }
+  }]
 JSON
 
   vars {
