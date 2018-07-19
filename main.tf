@@ -54,7 +54,7 @@ JSON
 # Prevents an envar from being declared more than once, as is sensible
 
 data "template_file" "_environment_keys" {
-  count = "${length(keys(var.environment))}"
+  count = "${var.environment_count}"
 
   template = <<JSON
 {
@@ -152,6 +152,7 @@ JSON
 
 data "template_file" "_log_configuration_driver" {
   template = "$${driver}"
+
   vars {
     driver = "${ length(var.logging_driver) > 0
       ? "${jsonencode("logDriver")}: ${ jsonencode(var.logging_driver) }"
@@ -160,16 +161,14 @@ data "template_file" "_log_configuration_driver" {
   }
 }
 
-
-
 data "template_file" "_log_configuration_options" {
   # Will become an empty string
   template = "${jsonencode("options")}: ${jsonencode(var.logging_options)}"
 }
 
-
-data "template_file"  "_log_configuration" {
+data "template_file" "_log_configuration" {
   template = "{$${configuration}}"
+
   vars {
     configuration = "${join(",",
         compact(
@@ -219,4 +218,5 @@ JSON
   }
 }
 
-          /**/
+/**/
+
