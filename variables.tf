@@ -96,12 +96,15 @@ variable "volumes_from" {
 }
 
 variable "logging_driver" {
-  default = ""
-  type = "string"
+  default     = ""
+  type        = "string"
   description = "logging configuration"
 }
+
 variable "logging_options" {
-  default = {}
-  type = "map"
+  default     = {}
+  type        = "map"
   description = ""
 }
+
+variable "environment_count" {}
