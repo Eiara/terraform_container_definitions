@@ -14,7 +14,7 @@ This exists because correctly generating ECS configuration maps is often Hard, a
     }
 
     module "hello_world" {
-        source                = "github.com/eiara/terraform_container_definitions?ref=0.15"
+        source                = "github.com/eiara/terraform_container_definitions"
 
         name                  = var.container_name
         image                 = "hello-world"

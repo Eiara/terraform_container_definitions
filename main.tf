@@ -57,6 +57,7 @@ locals {
     length(var.mount_points) == 0 ? {} : local.mount_points,
     length(var.volumes_from) == 0 ? {} : local.volumes_from,
     local.volumes_from,
-    local.log_configuration
+    local.log_configuration,
+    length(var.command) == 0 ? {} : { command = var.command }
   )
 }
